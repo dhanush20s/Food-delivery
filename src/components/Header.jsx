@@ -17,7 +17,7 @@ const Header = () => {
     
     const provider = new GoogleAuthProvider();
 
-    const [{user}, dispatch] = useStateValue();
+    const [{user,cartShow,cartItems}, dispatch] = useStateValue();
 
     const [isMenu, setisMenu] = useState(false)
 
@@ -43,13 +43,22 @@ const Header = () => {
         user: null,
       })
     }
+
+   const showCart = () =>{
+    dispatch({
+      type: actionType.SET_CART_SHOW,
+      cartShow:!cartShow,
+    })
+   }
+
   return (
-    <header className="fixed z-50 w-screen  p-3 px-4 md:p-6 md:px-16 bg-primary ">
+    <header className="fixed z-50 w-screen  p-3 px-4 md:p-4 md:px-16 bg-primary ">
       {/* desktop */}
       <div className=" hidden md:flex w-full items-center justify-between ">
         <Link to={"/"} className="flex items-center gap-2 ">
-          <img src={Logo} className="w-10 object-cover" alt="logo" />
-          <p className="text-headingColor text-xl font-bold ">City</p>
+          {/* <img src={Logo} className="w-10 object-cover" alt="logo" /> */}
+          <img src="https://ride.swiggy.com/images/logo.png" className="w-30 object-cover" alt="logo" />
+          {/* <p className="text-headingColor text-xl font-bold ">City</p> */}
         </Link>
         <div className=" flex items-center gap-8">
           <motion.ul
@@ -57,28 +66,38 @@ const Header = () => {
           animate={{opacity: 1, x:0}}
           exit={{opacity: 0, x:200}}
           className=" flex items-center gap-8">
+            <Link to={"/Home"}>
             <li className=" text-base text-textColor hover:text-headingColor cursor-pointer"
             onClick={()=>{setisMenu(false)}}>
               Home
             </li>
+            </Link>
+            <Link to={"/Menu"}>
             <li className=" text-base text-textColor hover:text-headingColor cursor-pointer"
             onClick={()=>{setisMenu(false)}}>
               Menu
             </li>
+            </Link>
+            <Link to={"/AboutUs"}>
             <li className=" text-base text-textColor hover:text-headingColor cursor-pointer"
             onClick={()=>{setisMenu(false)}}>
               About us
             </li>
+            </Link>
+            <Link to={"/Offer"}>
             <li className=" text-base text-textColor hover:text-headingColor cursor-pointer"
             onClick={()=>{setisMenu(false)}}>
-              Service
+              Offer
             </li>
+            </Link>
           </motion.ul>
-          <div className=" relative flex items-center justify-center">
+          <div className=" relative flex items-center justify-center" onClick={showCart}>
             <MdShoppingBasket className=" text-textColor text-2xl  cursor-pointer " />
-            <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center ">
-              <p className="text-xs text-white font-semibold ">2</p>
+            { cartItems && cartItems.length > 0 && (
+              <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center ">
+              <p className="text-xs text-white font-semibold ">{cartItems.length}</p>
             </div>
+            )}
           </div>
           <div>
             <div className="relative">
@@ -122,11 +141,13 @@ const Header = () => {
       </div>
       {/* mobile */}
       <div className=" flex items-center justify-between md:hidden w-full h-full">
-      <div className=" relative flex items-center justify-center">
+      <div className=" relative flex items-center justify-center" onClick={showCart}>
             <MdShoppingBasket className=" text-textColor text-2xl  cursor-pointer " />
-            <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center ">
-              <p className="text-xs text-white font-semibold ">2</p>
+            { cartItems && cartItems.length > 0 && (
+              <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center ">
+              <p className="text-xs text-white font-semibold ">{cartItems.length}</p>
             </div>
+            )}
           </div>
       <Link to={"/"} className="flex items-center gap-2 ">
           <img src={Logo} className="w-10 object-cover" alt="logo" />
